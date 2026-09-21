@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('production') || config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         $loader = AliasLoader::getInstance();
         $loader->alias('Cart', \App\Facades\Cart::class);
     }
